@@ -3,8 +3,7 @@
 ## 概要
 
 * 前回: [公式の AWS ローカルエミュレーターが出たので試してみる](https://github.com/Tobotobo/aws_emulator_study1)
-
-
+* 前回をブラッシュアップして、開発用のコンテナの作成と VSCode からアタッチして開発できるようにする
 
 ## 詳細
 
@@ -150,3 +149,11 @@ vscode ➜ ~ $ aws sts get-caller-identity
 * ブラウザから http://localhost:8080 にアクセス
 
 ![alt text](docs/images/2026-11-16T22-14-52-379Z.png)
+
+### 掃除
+
+```sh
+wslc rm -f aws-dev
+wslc rm -f stackport
+wslc rm -f aws-emulator
+```
