@@ -95,9 +95,10 @@ wslc run -d `
   aws-dev sleep infinity
 ```
 
-### aws-dev コンテナに VSCode でアタッチ
+### aws-dev コンテナに VSCode でアタッチ (GUI)
 
 ※VSCode の拡張機能で Dev Containers をインストールしておく
+※GUI ではなくコマンドで直接アタッチする方法は後述
 
 * 左側のパネルで `Containers` をクリック
 * Individual Containers の `aws-dev` を右クリック
@@ -131,6 +132,25 @@ vscode ➜ ~ $ aws sts get-caller-identity
 
 ![alt text](docs/images/2026-11-16T22-06-15-124Z.png)
 
+### aws-dev コンテナに VSCode でアタッチ (コマンド)
+
+```sh
+code --folder-uri (
+    "vscode-remote://attached-container+" +
+    "7b22636f6e7461696e65724e616d65223a226177732d646576227d" +
+    "/workspace"
+)
+```
+
+コンテナ名が `aws-dev` 以外の時は、`7b2263...` の値をコンテナ名に合わせて変更する必要がある。  
+以下の `CONTAINER_NAME` の値を変更して実行すると上記の値が出力される。
+
+```sh
+wslc run --rm `
+  -e CONTAINER_NAME=aws-dev `
+  alpine sh -c `
+  'printf "{\"containerName\":\"%s\"}" "$CONTAINER_NAME" | od -An -tx1 | tr -d "[:space:]"'
+```
 
 ### ポート転送して stackport にアクセス
 
@@ -149,6 +169,13 @@ vscode ➜ ~ $ aws sts get-caller-identity
 * ブラウザから http://localhost:8080 にアクセス
 
 ![alt text](docs/images/2026-11-16T22-14-52-379Z.png)
+
+### コマンドサンプル
+
+workspace/samples
+* 認証情報確認.md
+* S3.md
+* etc...
 
 ### 掃除
 

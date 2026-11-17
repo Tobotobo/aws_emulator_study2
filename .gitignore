@@ -2,3 +2,4 @@ emulator/
 .env
 /workspace/*
 !/workspace/.gitkeep
+!/workspace/samples/
