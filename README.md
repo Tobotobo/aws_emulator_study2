@@ -35,13 +35,12 @@
 ### 構成図
 
 ```mermaid
-
 flowchart TB
     subgraph HOST["Windows 11"]
         direction TB
         Browser["Web ブラウザ<br/>http://localhost:8080"]
         VSCode["VS Code<br/>Dev Containers"]
-        WORKDIR["./workspace"]
+        WORKDIR["workspace"]
     end
 
     subgraph WSL["WSL コンテナー (wslc)"]
@@ -60,6 +59,7 @@ flowchart TB
     VSCode -->|"ポート転送<br/>8080"| STACK
 
     DEV <-->|"AWS API 通信"| EMU
+    STACK -->|"AWS API 通信"| EMU
 
     WORKDIR <-->|"RW<br/>/workspace"| DEV
 
