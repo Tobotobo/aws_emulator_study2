@@ -7,6 +7,22 @@
 
 ## 詳細
 
+### 目次
+
+* [環境](#環境)
+* [構成図](#構成図)
+* [aws-emulator イメージをビルド](#aws-emulator-イメージをビルド)
+* [aws-emulator コンテナを起動](#aws-emulator-コンテナを起動)
+* [.env ファイルを作成](#env-ファイルを作成)
+* [stackport コンテナを起動](#stackport-コンテナを起動)
+* [aws-dev コンテナをビルド](#aws-dev-コンテナをビルド)
+* [aws-dev コンテナを起動](#aws-dev-コンテナを起動)
+* [aws-dev コンテナに VSCode でアタッチ (GUI)](#aws-dev-コンテナに-vscode-でアタッチ-gui)
+* [aws-dev コンテナに VSCode でアタッチ (コマンド)](#aws-dev-コンテナに-vscode-でアタッチ-コマンド)
+* [ポート転送して stackport にアクセス](#ポート転送して-stackport-にアクセス)
+* [コマンドサンプル](#コマンドサンプル)
+* [掃除](#掃除)
+
 ### 環境
 
 * Windows 11
@@ -15,6 +31,45 @@
   > wslc --version
   wslc 3.0.5.0
   ```
+
+### 構成図
+
+```mermaid
+
+flowchart TB
+    subgraph HOST["Windows 11"]
+        direction TB
+        Browser["Web ブラウザ<br/>http://localhost:8080"]
+        VSCode["VS Code<br/>Dev Containers"]
+        WORKDIR["./workspace"]
+    end
+
+    subgraph WSL["WSL コンテナー (wslc)"]
+        direction TB
+
+        subgraph NET["共有ネットワーク名前空間<br/>--network container:aws-emulator"]
+            direction LR
+            EMU["aws-emulator<br/>AWS ローカルエミュレーター<br/>Port: 9297"]
+            DEV["aws-dev<br/>開発用コンテナ<br/>AWS CLI"]
+            STACK["stackport<br/>Web UI<br/>Port: 8080"]
+        end
+    end
+
+    VSCode -->|"Dev Containers<br/>アタッチ"| DEV
+    Browser -->|"localhost:8080"| VSCode
+    VSCode -->|"ポート転送<br/>8080"| STACK
+
+    DEV <-->|"AWS API 通信"| EMU
+
+    WORKDIR <-->|"RW<br/>/workspace"| DEV
+
+    classDef emulator fill:#fff0d9,stroke:#d68a20,color:#392800
+    classDef dev fill:#dfeeff,stroke:#3c83c5,color:#172d48
+    classDef ui fill:#e0f4e8,stroke:#438d5a,color:#183c24
+    class EMU emulator
+    class DEV,VSCode dev
+    class STACK,Browser ui
+```
 
 ### aws-emulator イメージをビルド
 
