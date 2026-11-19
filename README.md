@@ -89,7 +89,7 @@ ENTRYPOINT ["aws-emulator", "-b", "0.0.0.0"]
 ```
 
 ```sh
-wslc build -t aws-emulator ./docker/aws-emulator
+wslc build --pull -t aws-emulator ./docker/aws-emulator
 ```
 
 バージョン確認
@@ -98,9 +98,14 @@ wslc run --rm aws-emulator -v
 ```
 
 ```
-Version: 1.0.471
-Release date: 2026.11.16
-Commit: 91eb64ca5a78a7d78f4748085e65681abc417e15
+Version: 1.0.523
+Release date: 2026.11.19
+Commit: 864dd26a02416cc990250070e65c7b703d06755e
+```
+
+ヘルプ確認
+```sh
+wslc run --rm aws-emulator --help
 ```
 
 ### aws-emulator コンテナを起動
@@ -123,18 +128,20 @@ cp .env.template .env
 https://hub.docker.com/r/davireis/stackport/tags
 
 ```sh
+wslc pull davireis/stackport:latest
+
 wslc run -d `
   --name stackport `
   --network container:aws-emulator `
   -v "./emulator:/emulator:ro" `
   --env-file .env `
-  davireis/stackport:0.4.6
+  davireis/stackport:latest
 ```
 
 ### aws-dev コンテナをビルド
 
 ```sh
-wslc build -t aws-dev ./docker/aws-dev
+wslc build --pull -t aws-dev ./docker/aws-dev
 ```
 
 ### aws-dev コンテナを起動
@@ -238,4 +245,9 @@ workspace/samples
 wslc rm -f aws-dev
 wslc rm -f stackport
 wslc rm -f aws-emulator
+```
+
+未使用イメージを削除
+```sh
+wslc image prune -a
 ```

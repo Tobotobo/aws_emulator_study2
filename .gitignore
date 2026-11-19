@@ -3,3 +3,5 @@ emulator/
 /workspace/*
 !/workspace/.gitkeep
 !/workspace/samples/
+!/workspace/docs/
+!/workspace/.vscode/

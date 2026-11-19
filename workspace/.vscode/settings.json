@@ -1,0 +1,4 @@
+{
+  // ポートの自動転送を停止
+  "remote.autoForwardPorts": false
+}
